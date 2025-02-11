@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Modules\Articles\Http\Controllers;
 
-use App\Models\Article;
-use App\Http\Requests\StoreArticleRequest;
-use App\Http\Requests\UpdateArticleRequest;
+use Illuminate\Routing\Controller;
+use Modules\Articles\Entities\Article;
+use Modules\Articles\Http\Requests\StoreArticleRequest;
+use Modules\Articles\Http\Requests\UpdateArticleRequest;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Exception;
 use Inertia\Inertia;
 
-class ArticleController extends Controller
+class ArticlesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -60,11 +61,12 @@ class ArticleController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  Article  $article
+     * @param  int  $id
      * @return Inertia\Response
      */
-    public function edit(Article $article)
+    public function edit(int $id)
     {
+        $article = Article::find($id);
         return Inertia::render('EditArticle', [
             'article' => $article
         ]);
@@ -74,11 +76,12 @@ class ArticleController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  Article  $article
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateArticleRequest $request, Article $article)
+    public function update(UpdateArticleRequest $request, int $id)
     {
+        $article = Article::find($id);
         $request->validated();
 
         $article->fill($request->all());
@@ -90,12 +93,13 @@ class ArticleController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Article $article
+     * @param  int  $id
      * @return JsonResource
      */
-    public function destroy(Article $article)
+    public function destroy(int $id)
     {
         try {
+            $article = Article::find($id);
             $article->delete();
             return response()->json(['status' => 'success', 'message' => 'Article deleted successfully.']);
         } catch (Exception $e) {
