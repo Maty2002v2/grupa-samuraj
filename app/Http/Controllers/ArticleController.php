@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Article;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -10,21 +11,23 @@ class ArticleController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Inertia\Response
      */
     public function index()
     {
-        return Inertia::render('IndexArticle');
+        return Inertia::render('IndexArticle', [
+            'articles' => Article::all()
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Inertia\Response
      */
     public function create()
     {
-        //
+        return Inertia::render('CreateArticle');
     }
 
     /**

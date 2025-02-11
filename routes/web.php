@@ -1,7 +1,7 @@
 <?php
 
+use App\Http\Controllers\ArticleController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,10 +14,5 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/vue', function () {
-    return Inertia::render('Home');
-});
+Route::get('/', [ArticleController::class, 'index'])->name('articles');
+Route::get('/articles/create', [ArticleController::class, 'create'])->name('articles.create');
