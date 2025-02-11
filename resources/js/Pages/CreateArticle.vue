@@ -12,7 +12,7 @@ const createArticle = async () => {
     errors.value = {};
 
     try {
-        const responseJSON = await axios.post('/articles', {
+        const response = await axios.post('/articles', {
             title: title.value,
             content: content.value
         },
@@ -22,10 +22,8 @@ const createArticle = async () => {
             }
         });
 
-        const response = await responseJSON.json();
-
-        if (response.redirect) {
-            window.location.href = response.redirect;
+        if (response.data.redirect) {
+            window.location.href = response.data.redirect;
         }
     } catch(error) {
         if (error.response && error.response.status === 422) {

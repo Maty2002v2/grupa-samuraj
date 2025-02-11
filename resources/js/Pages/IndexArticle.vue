@@ -1,22 +1,35 @@
 <script setup>
-const props = defineProps(['articles']);
+import { computed } from 'vue';
+import Pagination from '../Components/Pagination.vue';
+
+const props = defineProps(['articlesPaginate']);
+
+const articles = computed(() => props.articlesPaginate.data)
 </script>
 
 <template>
-    <div>
+    <div class="container">
         <h1>Articles</h1>
 
-        <section>
-            <h2>Add article</h2>
-            <a :href="route('articles.create')">new</a>
+        <section class="d-flex mt-5">
+            <h2 class="m-0">Add article</h2>
+            <a :href="route('articles.create')" class="btn btn-md btn-primary ms-3">new</a>
         </section>
 
-        <section>
+        <section class="mt-5">
             <h2>Our articles</h2>
-            <article v-for="article in articles">
+
+            <Pagination :paginationlinks="articlesPaginate.links" :currentPage="articlesPaginate.current_page" />
+
+            <article v-for="article in articles" class="mt-3 shadow-sm p-3 mb-5 bg-light rounded">
                 <h3>{{ article.title }}</h3>
                 <p>{{ article.content }}</p>
+                <p>
+                    <button class="btn btn-sm btn-primary">Edit</button>
+                    <button class="btn btn-sm btn-danger ms-2">Delete</button>
+                </p>
             </article>
+            <Pagination :paginationlinks="articlesPaginate.links" :currentPage="articlesPaginate.current_page" />
         </section>
     </div>
 </template>
