@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use App\Http\Requests\StoreArticleRequest;
+use App\Http\Requests\UpdateArticleRequest;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -34,7 +35,7 @@ class ArticleController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\StoreArticleRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreArticleRequest $request)
@@ -58,24 +59,31 @@ class ArticleController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  Article  $article
+     * @return Inertia\Response
      */
-    public function edit($id)
+    public function edit(Article $article)
     {
-        //
+        return Inertia::render('EditArticle', [
+            'article' => $article
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateArticleRequest $request, Article $article)
     {
-        //
+        $request->validated();
+
+        $article->fill($request->all());
+        $article->save();
+
+        return response()->json(['redirect' => route('articles')]);
     }
 
     /**

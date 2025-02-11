@@ -25,7 +25,9 @@ const articles = computed(() => props.articlesPaginate.data)
                 <h3>{{ article.title }}</h3>
                 <p>{{ article.content }}</p>
                 <p>
-                    <button class="btn btn-sm btn-primary">Edit</button>
+                    <a :href="route('articles.edit', article.id)">
+                        <button class="btn btn-sm btn-primary">Edit</button>
+                    </a>
                     <button class="btn btn-sm btn-danger ms-2">Delete</button>
                 </p>
             </article>
