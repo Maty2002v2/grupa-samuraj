@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Http\Requests\StoreArticleRequest;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -36,9 +37,11 @@ class ArticleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreArticleRequest $request)
     {
-        //
+        Article::create($request->validated());
+
+        return response()->json(['redirect' => route('articles')]);
     }
 
     /**
