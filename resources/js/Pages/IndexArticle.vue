@@ -1,5 +1,10 @@
 <script setup>
-const props = defineProps(['articles']);
+import { computed } from 'vue';
+import Pagination from '../Components/Pagination.vue';
+
+const props = defineProps(['articlesPaginate']);
+
+const articles = computed(() => props.articlesPaginate.data)
 </script>
 
 <template>
@@ -13,6 +18,9 @@ const props = defineProps(['articles']);
 
         <section class="mt-5">
             <h2>Our articles</h2>
+
+            <Pagination :paginationlinks="articlesPaginate.links" :currentPage="articlesPaginate.current_page" />
+
             <article v-for="article in articles" class="mt-3 shadow-sm p-3 mb-5 bg-light rounded">
                 <h3>{{ article.title }}</h3>
                 <p>{{ article.content }}</p>
@@ -21,6 +29,7 @@ const props = defineProps(['articles']);
                     <button class="btn btn-sm btn-danger ms-2">Delete</button>
                 </p>
             </article>
+            <Pagination :paginationlinks="articlesPaginate.links" :currentPage="articlesPaginate.current_page" />
         </section>
     </div>
 </template>
