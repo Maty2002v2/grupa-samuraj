@@ -1,10 +1,51 @@
 <script setup>
+import axios from 'axios';
+import Swal from 'sweetalert2'
 import { computed } from 'vue';
 import Pagination from '../Components/Pagination.vue';
 
 const props = defineProps(['articlesPaginate']);
 
-const articles = computed(() => props.articlesPaginate.data)
+const articles = computed(() => props.articlesPaginate.data);
+
+const deleteArticle = async (id) => {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    try {
+        const alert = await Swal.fire({
+            title: 'Wait',
+            text: 'Are you sure you want to delete?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'Cancel'
+        });
+
+        if (!alert.isConfirmed) return;
+
+        const response = await axios.delete(`/articles/${id}`,
+        {
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            }
+        });
+
+        await Swal.fire({
+            title: 'Deleted!',
+            text: response.data.message,
+            icon: 'success'
+        });
+
+        // Refresh to update the view, it would also be possible to filter the current articles so that they do not contain the removed id
+        window.location.reload();
+    } catch(error) {
+        Swal.fire({
+            title: 'Error!',
+            text: error.response.data.message,
+            icon: 'error'
+        });
+    }
+}
 </script>
 
 <template>
@@ -28,7 +69,7 @@ const articles = computed(() => props.articlesPaginate.data)
                     <a :href="route('articles.edit', article.id)">
                         <button class="btn btn-sm btn-primary">Edit</button>
                     </a>
-                    <button class="btn btn-sm btn-danger ms-2">Delete</button>
+                    <button class="btn btn-sm btn-danger ms-2" @click="deleteArticle(article.id)">Delete</button>
                 </p>
             </article>
             <Pagination :paginationlinks="articlesPaginate.links" :currentPage="articlesPaginate.current_page" />

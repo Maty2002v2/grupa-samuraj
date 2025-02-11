@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Article;
 use App\Http\Requests\StoreArticleRequest;
 use App\Http\Requests\UpdateArticleRequest;
-use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
+use Exception;
 use Inertia\Inertia;
 
 class ArticleController extends Controller
@@ -89,11 +90,16 @@ class ArticleController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  Article $article
+     * @return JsonResource
      */
-    public function destroy($id)
+    public function destroy(Article $article)
     {
-        //
+        try {
+            $article->delete();
+            return response()->json(['status' => 'success', 'message' => 'Article deleted successfully.']);
+        } catch (Exception $e) {
+            return response()->json(['status' => 'error', 'message' => 'Failed to delete article.'])->setStatusCode(500);
+        }
     }
 }
