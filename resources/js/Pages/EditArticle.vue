@@ -14,7 +14,7 @@ const createArticle = async () => {
     errors.value = {};
 
     try {
-        const response = await axios.post(`/articles/${props.article.id}`, {
+        const response = await axios.put(`/articles/${props.article.id}`, {
             title: title.value,
             content: content.value
         },
@@ -38,7 +38,7 @@ const createArticle = async () => {
 <template>
     <div class="container">
         <h1 class="mt-4">Edit</h1>
-        <form method="post" @submit.prevent="createArticle" class="mt-5 needs-validation" novalidate>
+        <form @submit.prevent="createArticle" class="mt-5 needs-validation" novalidate>
             <div class="form-group">
                 <label for="Title">Title</label>
                 <input v-model="title" type="text" :class="['form-control', errors.title ? 'is-invalid' : '']" id="title" aria-describedby="titleHelp" required />

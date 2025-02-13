@@ -19,6 +19,6 @@ Route::prefix('articles')->group(function () {
     Route::get('/create', [ArticlesController::class, 'create'])->name('articles.create');
     Route::post('/', [ArticlesController::class, 'store'])->name('articles.store');
     Route::get('/edit/{id}', [ArticlesController::class, 'edit'])->name('articles.edit');
-    Route::post('/{id}', [ArticlesController::class, 'update'])->name('articles.update');
+    Route::put('/{id}', [ArticlesController::class, 'update'])->name('articles.update');
     Route::delete('/{id}', [ArticlesController::class, 'destroy'])->name('articles.destroy');
 });
